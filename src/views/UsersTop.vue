@@ -1,7 +1,8 @@
 <template>
   <div class="container py-5">
     <NavTabs />
-    <h1 class="mt-5">Top Users</h1>
+    <h1 class="mt-5">美食達人</h1>
+    <hr />
   </div>
 </template>
 

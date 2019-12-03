@@ -282,7 +282,6 @@ const dummyData = {
 import NavTabs from '../components/NavTabs'
 import TopUsersCard from '../components/TopUsersCard'
 export default {
-  name: 'UsersTop',
   components: {
     NavTabs,
     TopUsersCard

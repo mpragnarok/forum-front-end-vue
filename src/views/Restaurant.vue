@@ -1,14 +1,16 @@
 <template>
   <div class="container py-5">
-    <h1>Restaurant Detail</h1>
     <!-- 餐廳資訊頁 RestaurantDetail -->
-    <hr />
+    <RestaurantDetail :initial-restaurant="restaurant" />
     <!-- 餐廳評論 RestaurantComments -->
+    <RestaurantComments :restaurant-comments="restaurantComments" />
     <!-- 新增評論 CreateComment -->
   </div>
 </template>
 
 <script>
+import RestaurantDetail from '../components/RestaurantDetail'
+import RestaurantComments from '../components/RestaurantComments'
 const dummyData = {
   restaurant: {
     id: 1,
@@ -113,6 +115,10 @@ const dummyData = {
   isLiked: true
 }
 export default {
+  components: {
+    RestaurantDetail,
+    RestaurantComments
+  },
   data() {
     return {
       restaurant: {

@@ -3,7 +3,10 @@
     <!-- 餐廳資訊頁 RestaurantDetail -->
     <RestaurantDetail :initial-restaurant="restaurant" />
     <!-- 餐廳評論 RestaurantComments -->
-    <RestaurantComments :restaurant-comments="restaurantComments" />
+    <RestaurantComments
+      :restaurant-comments="restaurantComments"
+      @after-delete-comment="afterDeleteComment"
+    />
     <!-- 新增評論 CreateComment -->
   </div>
 </template>
@@ -157,6 +160,12 @@ export default {
         isLiked: dummyData.isLiked
       }
       this.restaurantComments = dummyData.restaurant.Comments
+    },
+    afterDeleteComment(commentId) {
+      // filter to keep the unselected comment.id
+      this.restaurantComments = this.restaurantComments.filter(
+        comment => comment.id !== commentId
+      )
     }
   }
 }

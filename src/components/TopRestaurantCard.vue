@@ -23,11 +23,13 @@
           >Show</router-link>
 
           <button
+            v-if="restaurant.isFavorited"
             type="button"
             class="btn btn-danger mr-2"
             @click.stop.prevent="addFavorite"
           >移除最愛</button>
           <button
+            v-else
             type="button"
             class="btn btn-primary"
             @click.stop.prevent="deleteFavorite"

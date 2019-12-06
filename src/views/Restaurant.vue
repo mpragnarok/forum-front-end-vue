@@ -161,9 +161,7 @@ export default {
     this.fetchRestaurant(restaurantId)
   },
   methods: {
-    fetchRestaurant(restaurantId) {
-      console.log('fetchRestaurant id: ', restaurantId)
-
+    fetchRestaurant() {
       this.restaurant = {
         id: dummyData.restaurant.id,
         name: dummyData.restaurant.name,

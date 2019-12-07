@@ -26,11 +26,11 @@
           </li>
         </ul>
         <p></p>
-        <a
+        <router-link
+          :to="{name: 'user-edit', params: {id:profile.id}}"
           v-if="currentUser.id == profile.id"
           class="btn btn-info"
-          herf="#"
-        >Edit</a>
+        >Edit</router-link>
         <button
           v-else-if="currentUser.id != profile.id && profile.isFollowed"
           type="submit"

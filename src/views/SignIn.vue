@@ -67,39 +67,37 @@ export default {
   },
   methods: {
     // eslint-disable-next-line
-    handleSubmit(e) {
-      if (!this.email || !this.password) {
-        Toast.fire({
-          icon: 'warning',
-          title: 'Please input email and password'
-        })
-        return
-      }
-      this.isProcessing = true
-
-      authorizationAPI
-        .signIn({
+    async handleSubmit(e) {
+      try {
+        if (!this.email || !this.password) {
+          Toast.fire({
+            icon: 'warning',
+            title: 'Please input email and password'
+          })
+          return
+        }
+        this.isProcessing = true
+        const response = authorizationAPI.signIn({
           email: this.email,
           password: this.password
         })
-        .then(response => {
-          //  request data from API
-          const { data } = response
-          // store token in localStorage
-          localStorage.setItem('token', data.token)
-          // redirect to /restaurants after logined
-          this.$router.push('/restaurants')
-        })
-        .catch(error => {
-          this.password = ''
+        const { data, statusText } = response
 
-          Toast.fire({
-            icon: 'warning',
-            title: 'Email or password is wrong'
-          })
-          this.isProcessing = false
-          console.log('error', error)
+        if (statusText !== 'OK' || data.status !== 'success') {
+          throw new Error(statusText)
+        }
+        // store token in localStorage
+        localStorage.setItem('token', data.token)
+        // redirect to /restaurants after logined
+        this.$router.push('/restaurants')
+      } catch (e) {
+        this.password = ''
+        this.isProcessing = false
+        Toast.fire({
+          icon: 'warning',
+          title: 'Email or password is wrong'
         })
+      }
     }
   }
 }

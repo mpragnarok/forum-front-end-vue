@@ -39,6 +39,7 @@
       <button
         class="btn btn-lg btn-primary btn-block mb-3"
         type="submit"
+        :disabled="isProcessing"
       >Submit</button>
 
       <div class="text-center mb-3">
@@ -60,7 +61,8 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      isProcessing: false
     }
   },
   methods: {
@@ -73,6 +75,7 @@ export default {
         })
         return
       }
+      this.isProcessing = true
 
       authorizationAPI
         .signIn({
@@ -94,6 +97,7 @@ export default {
             icon: 'warning',
             title: 'Email or password is wrong'
           })
+          this.isProcessing = false
           console.log('error', error)
         })
     }

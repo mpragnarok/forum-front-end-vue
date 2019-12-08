@@ -42,17 +42,17 @@ export default new Router({
       path: '/restaurants/:id',
       name: 'restaurant',
       component: () => import('../views/Restaurant.vue')
+    }, {
+      path: '/users/top',
+      name: 'users-top',
+      component: () => import('../views/UsersTop.vue')
     },
     {
       path: '/users/:id',
       name: 'user',
       component: () => import('../views/User.vue')
     },
-    {
-      path: '/users/top',
-      name: 'users-top',
-      component: () => import('../views/UsersTop.vue')
-    },
+
     {
       path: '/users/:id/edit',
       name: 'user-edit',

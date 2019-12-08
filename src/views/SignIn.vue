@@ -1,7 +1,10 @@
 // ./src/views/SignIn.vue
 <template>
   <div class="container py-5">
-    <form class="w-100" @submit.prevent.stop="handleSubmit">
+    <form
+      class="w-100"
+      @submit.prevent.stop="handleSubmit"
+    >
       <div class="text-center mb-4">
         <h1 class="h3 mb-3 font-weight-normal">Sign In</h1>
       </div>
@@ -33,7 +36,10 @@
         />
       </div>
 
-      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">Submit</button>
+      <button
+        class="btn btn-lg btn-primary btn-block mb-3"
+        type="submit"
+      >Submit</button>
 
       <div class="text-center mb-3">
         <p>
@@ -46,6 +52,9 @@
   </div>
 </template>
 <script>
+import authorizationAPI from '../apis/authorization'
+import { Toast } from '../utils/helpers'
+
 export default {
   name: 'SignIn',
   data() {
@@ -57,14 +66,36 @@ export default {
   methods: {
     // eslint-disable-next-line
     handleSubmit(e) {
-      const data = JSON.stringify({
-        email: this.email,
-        password: this.password
-      })
+      if (!this.email || !this.password) {
+        Toast.fire({
+          icon: 'warning',
+          title: 'Please input email and password'
+        })
+        return
+      }
 
-      // TODO: 向後端驗證使用者登入資訊是否合法
+      authorizationAPI
+        .signIn({
+          email: this.email,
+          password: this.password
+        })
+        .then(response => {
+          //  request data from API
+          const { data } = response
+          // store token in localStorage
+          localStorage.setItem('token', data.token)
+          // redirect to /restaurants after logined
+          this.$router.push('/restaurants')
+        })
+        .catch(error => {
+          this.password = ''
 
-      console.log('data', data)
+          Toast.fire({
+            icon: 'warning',
+            title: 'Email or password is wrong'
+          })
+          console.log('error', error)
+        })
     }
   }
 }

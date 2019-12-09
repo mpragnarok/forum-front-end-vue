@@ -21,6 +21,9 @@ export default {
   categories: {
     get() {
       return apiHelper.get('/admin/categories')
+    },
+    create({ categoryName }) {
+      return apiHelper.post('/admin/categories', categoryName)
     }
   }
 }

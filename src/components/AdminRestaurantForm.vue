@@ -151,6 +151,15 @@ export default {
       isLoading: true
     }
   },
+  watch: {
+    initialRestaurant(restaurant) {
+      this.restaurant = {
+        ...this.restaurant,
+        // when restaurant changed, overwrite the old data
+        ...restaurant
+      }
+    }
+  },
   created() {
     this.fetchCategories()
     this.restaurant = {

@@ -18,6 +18,7 @@
             type="button"
             class="btn btn-primary"
             @click.stop.prevent="createCategory"
+            :disabled="isProcessing"
           >新增</button>
         </div>
       </div>
@@ -86,8 +87,6 @@
 
 <script>
 import AdminNav from '@/components/AdminNav'
-import uuid from 'uuid/v4'
-
 import adminAPI from '../apis/admin'
 import { Toast } from '../utils/helpers'
 
@@ -99,7 +98,8 @@ export default {
   data() {
     return {
       newCategoryName: '',
-      categories: []
+      categories: [],
+      isProcessing: false
     }
   },
 
@@ -126,15 +126,32 @@ export default {
         })
       }
     },
-    createCategory() {
-      // TODO: pass newCategory to API server
+    async createCategory() {
+      try {
+        this.isProcessing = true
 
-      //  Add new Category to array
-      this.categories.push({
-        id: uuid(),
-        name: this.newCategoryName
-      })
-      this.newCategoryName = ''
+        const { data, statusText } = await adminAPI.categories.create({
+          name: this.newCategoryName
+        })
+
+        if (statusText !== 'OK' || data.status !== 'success') {
+          throw new Error(statusText)
+        }
+        // api server should response category data
+        this.categories.push({
+          ...data.category,
+          isEditing: false
+        })
+
+        this.isProcessing = false
+        this.newCategoryName = '' // 清空原本欄位中的內容
+      } catch (error) {
+        this.isProcessing = false
+        Toast.fire({
+          icon: 'error',
+          title: '無法新增餐廳類別，請稍後再試'
+        })
+      }
     },
     deleteCategory(categoryId) {
       // TODO: pass delete category request to API server

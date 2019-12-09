@@ -64,6 +64,11 @@ export default {
     const { id: restaurantId } = this.$route.params
     this.fetchRestaurant(restaurantId)
   },
+  beforeRouteUpdate(to, from, next) {
+    const { id } = to.params
+    this.fetchRestaurant(id)
+    next()
+  },
   methods: {
     async fetchRestaurant(restaurantId) {
       try {

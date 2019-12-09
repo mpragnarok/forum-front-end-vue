@@ -166,7 +166,6 @@ export default {
           title: 'Delete category successfully'
         })
       } catch (error) {
-        console.log('error', error)
         Toast.fire({
           icon: 'error',
           title: 'Not able to delete category'
@@ -183,10 +182,16 @@ export default {
         }
       })
     },
-    updateCategory({ categoryId, name }) {
-      // TODO: 透過 API 去向伺服器更新餐廳類別名稱
+    async updateCategory({ categoryId, name }) {
+      const { data, statusText } = await adminAPI.categories.update({
+        categoryId,
+        name
+      })
+      if (statusText !== 'OK' || data.status !== 'success') {
+        throw new Error(data.message)
+      }
+
       this.toggleIsEditing(categoryId)
-      console.log(name)
     },
     handleCancel(categoryId) {
       this.categories = this.categories.map(category => {

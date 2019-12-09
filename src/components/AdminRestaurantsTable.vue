@@ -68,7 +68,6 @@ export default {
         }
         this.restaurants = data.restaurants
       } catch (e) {
-        console.log('e', e)
         Toast.fire({
           icon: 'error',
           title: "Can't fetch restaurants data"

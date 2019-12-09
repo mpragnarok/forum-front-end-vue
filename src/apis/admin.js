@@ -24,6 +24,9 @@ export default {
     },
     create({ name }) {
       return apiHelper.post('/admin/categories', { name })
+    },
+    delete({ categoryId }) {
+      return apiHelper.delete(`/admin/categories/${ categoryId }`)
     }
   }
 }

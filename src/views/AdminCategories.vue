@@ -116,7 +116,6 @@ export default {
 
         this.categories = data.categories.map(category => ({
           ...category,
-          nameCached: category.name,
           isEditing: false
         }))
       } catch (error) {
@@ -137,29 +136,42 @@ export default {
         if (statusText !== 'OK' || data.status !== 'success') {
           throw new Error(statusText)
         }
-        // api server should response category data
-        this.categories.push({
-          ...data.category,
-          isEditing: false
-        })
 
         this.isProcessing = false
         this.newCategoryName = '' // 清空原本欄位中的內容
+        this.fetchCategories()
       } catch (error) {
         this.isProcessing = false
         Toast.fire({
           icon: 'error',
-          title: '無法新增餐廳類別，請稍後再試'
+          title: 'Not able to add category'
         })
       }
     },
-    deleteCategory(categoryId) {
+    async deleteCategory(categoryId) {
       // TODO: pass delete category request to API server
-
-      //  filter category
-      this.categories = this.categories.filter(
-        category => category.id !== categoryId
-      )
+      try {
+        const { data, statusText } = await adminAPI.categories.delete({
+          categoryId
+        })
+        if (statusText !== 'OK' || data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        //  filter category
+        this.categories = this.categories.filter(
+          category => category.id !== categoryId
+        )
+        Toast.fire({
+          icon: 'success',
+          title: 'Delete category successfully'
+        })
+      } catch (error) {
+        console.log('error', error)
+        Toast.fire({
+          icon: 'error',
+          title: 'Not able to delete category'
+        })
+      }
     },
     toggleIsEditing(categoryId) {
       this.categories = this.categories.map(category => {

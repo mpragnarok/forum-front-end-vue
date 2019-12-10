@@ -11,5 +11,8 @@ export default {
   },
   getTopRestaurants() {
     return apiHelper.get('/restaurants/top')
-  }
+  },
+  getRestaurant({ restaurantId }) {
+    return apiHelper.get(`/restaurants/${restaurantId}`)
+  },
 }

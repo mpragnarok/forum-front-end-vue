@@ -34,52 +34,24 @@
             :to="{name: 'user', params: {id: currentUser.id}}"
             class="text-white mr-3"
           >{{ currentUser.name || '使用者'}} 您好</router-link>
-          <button
-            type="button"
-            class="btn btn-sm btn-outline-success my-2 my-sm-0"
-          >登出</button>
+          <router-link>
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-success my-2 my-sm-0"
+            >登出</button>
+          </router-link>
         </template>
       </div>
     </div>
   </nav>
 </template>
 <script>
-// seed data
-const dummyUser = {
-  currentUser: {
-    id: 1,
-    name: 'Admin',
-    email: 'root@example.com',
-    image: 'https://i.pravatar.cc/300',
-    isAdmin: true
-  },
-  isAuthenticated: true
-}
+import { mapState } from 'vuex'
+
 export default {
   name: 'Navbar',
-  data() {
-    return {
-      currentUser: {
-        id: -1,
-        name: '',
-        email: '',
-        image: '',
-        isAdmin: false
-      },
-      isAuthenticated: false
-    }
-  },
-  created() {
-    this.fetchUser()
-  },
-  methods: {
-    fetchUser() {
-      this.currentUser = {
-        ...this.currentUser,
-        ...dummyUser.currentUser
-      }
-      this.isAuthenticated = dummyUser.isAuthenticated
-    }
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
   }
 }
 </script>

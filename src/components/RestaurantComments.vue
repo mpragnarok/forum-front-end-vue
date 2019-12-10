@@ -12,7 +12,7 @@
           v-if="currentUser.isAdmin"
           type="button"
           class="btn btn-danger float-right"
-          @click.stop.prevent="handleDeleteButtonClick(comment.id)"
+          @click.stop.prevent="deleteComment(comment.id)"
         >Delete</button>
         <h3>
           <a
@@ -29,16 +29,10 @@
 </template>
 
 <script>
-const dummyUser = {
-  currentUser: {
-    id: 1,
-    name: 'Admin',
-    email: 'root@example.com',
-    image: 'https://i.pravatar.cc/300',
-    isAdmin: true
-  },
-  isAuthenticated: true
-}
+import { mapState } from 'vuex'
+import commentsAPI from '../apis/comments'
+import { Toast } from '../utils/helpers'
+
 import { fromNowFilter } from './../utils/mixins'
 export default {
   mixins: [fromNowFilter],
@@ -48,18 +42,29 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      currentUser: dummyUser.currentUser
+  methods: {
+    async deleteComment(commentId) {
+      try {
+        const { data, statusText } = await commentsAPI.delete({ commentId })
+        if (statusText !== 'OK' || data.status !== 'success') {
+          throw new Error(statusText)
+        }
+        // 觸發父層事件 - $emit( '事件名稱' , 傳遞的資料 )
+        this.$emit('after-delete-comment', commentId)
+        Toast.fire({
+          type: 'success',
+          title: '移除評論成功'
+        })
+      } catch (error) {
+        Toast.fire({
+          type: 'error',
+          title: '無法移除評論，請稍後再試'
+        })
+      }
     }
   },
-  methods: {
-    handleDeleteButtonClick(commentId) {
-      console.log('handleDeleteButtonClick', commentId)
-      // TODO: 請求 API 伺服器刪除 id 為 commentId 的評論
-      // 觸發父層事件 - $emit( '事件名稱' , 傳遞的資料 )
-      this.$emit('after-delete-comment', commentId)
-    }
+  computed: {
+    ...mapState(['currentUser'])
   }
 }
 </script>

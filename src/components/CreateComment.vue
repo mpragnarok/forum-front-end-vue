@@ -22,7 +22,7 @@
 <script>
 import commentsAPI from '../apis/comments'
 import { Toast } from '../utils/helpers'
-import { mapState } from 'vuex'
+
 export default {
   props: {
     restaurantId: {
@@ -70,9 +70,6 @@ export default {
         })
       }
     }
-  },
-  computed: {
-    ...mapState(['currentUser'])
   }
 }
 </script>

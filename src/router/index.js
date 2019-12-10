@@ -63,7 +63,7 @@ const router = new Router({
     {
       path: '/restaurants/:id/dashboard',
       name: 'restaurant-dashboard',
-      component: () => import('../components/RestaurantDashboard.vue')
+      component: () => import('../views/RestaurantDashboard.vue')
     },
     {
       path: '/admin',

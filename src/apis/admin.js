@@ -31,5 +31,13 @@ export default {
     update({ categoryId, name }) {
       return apiHelper.put(`/admin/categories/${categoryId}`, { name })
     }
+  },
+  users: {
+    get() {
+      return apiHelper.get('/admin/users')
+    },
+    update({ userId, isAdmin }) {
+      return apiHelper.put(`/admin/users/${userId}`, { isAdmin })
+    }
   }
 }

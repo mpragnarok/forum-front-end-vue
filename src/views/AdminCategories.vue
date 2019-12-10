@@ -23,7 +23,11 @@
         </div>
       </div>
     </form>
-    <table class="table">
+    <Spinner v-if="isLoading" />
+    <table
+      v-else
+      class="table"
+    >
       <thead class="thead-dark">
         <tr>
           <th
@@ -86,20 +90,23 @@
 </template>
 
 <script>
+import Spinner from '@/components/Spinner'
 import AdminNav from '@/components/AdminNav'
 import adminAPI from '../apis/admin'
 import { Toast } from '../utils/helpers'
 
 export default {
   components: {
-    AdminNav
+    AdminNav,
+    Spinner
   },
 
   data() {
     return {
       newCategoryName: '',
       categories: [],
-      isProcessing: false
+      isProcessing: false,
+      isLoading: true
     }
   },
 
@@ -118,7 +125,9 @@ export default {
           ...category,
           isEditing: false
         }))
+        this.isLoading = false
       } catch (error) {
+        this.isLoading = false
         Toast.fire({
           icon: 'error',
           title: "Can't fetch categories"

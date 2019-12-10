@@ -1,6 +1,10 @@
 <template>
   <div class="container py-5">
-    <div class="row">
+    <Spinner v-if="isLoading" />
+    <div
+      v-else
+      class="row"
+    >
       <div class="col-md-12">
         <h1>{{ restaurant.name }}</h1>
         <p>[{{ restaurant.categoryName }}]</p>

@@ -1,36 +1,43 @@
 <template>
   <div class="row">
-    <div class="col-md-12">
-      <h1>{{restaurant.name}}</h1>
-      <span class="badge badge-secondary">{{restaurant.categoryName }}</span>
-    </div>
-    <div class="col-md-4">
-      <div class="well">
-        <ul class="list-unstyled">
-          <li>
-            <strong>Reviews:</strong>
-            {{restaurant.commentsLength }}
-          </li>
-          <li>
-            <strong>Favorited:</strong>
-            {{restaurant.favoritedUsersLength }}
-          </li>
-        </ul>
-        <a
-          href="#"
-          @click="$router.back()"
-        >Go back</a>
+    <Spinner v-if="isLoading" />
+    <template v-else>
+      <div class="col-md-12">
+        <h1>{{restaurant.name}}</h1>
+        <span class="badge badge-secondary">{{restaurant.categoryName }}</span>
       </div>
-    </div>
+      <div class="col-md-4">
+        <div class="well">
+          <ul class="list-unstyled">
+            <li>
+              <strong>Reviews:</strong>
+              {{restaurant.commentsLength }}
+            </li>
+            <li>
+              <strong>Favorited:</strong>
+              {{restaurant.favoritedUsersLength }}
+            </li>
+          </ul>
+          <a
+            href="#"
+            @click="$router.back()"
+          >Go back</a>
+        </div>
+      </div>
 
-    <hr />
+      <hr />
+    </template>
   </div>
 </template>
 
 <script>
+import Spinner from '../components/Spinner'
 import restaurantsAPI from '../apis/restaurants'
 import { Toast } from '../utils/helpers'
 export default {
+  components: {
+    Spinner
+  },
   data() {
     return {
       restaurant: {
@@ -40,7 +47,8 @@ export default {
         commentsLength: 0,
         favoritedUsersLength: 0,
         likedUsersLength: 0
-      }
+      },
+      isLoading: true
     }
   },
   created() {
@@ -55,6 +63,7 @@ export default {
   methods: {
     async fetchRestaurant(restaurantId) {
       try {
+        this.isLoading = true
         const {
           data: { restaurant },
           statusText
@@ -73,7 +82,9 @@ export default {
           favoritedUsersLength: restaurant.FavoritedUsers.length,
           likedUsersLength: restaurant.LikedUsers.length
         }
+        this.isLoading = false
       } catch (error) {
+        this.isLoading = false
         Toast.fire({
           icon: 'error',
           title: '無法取得餐廳資料，請稍後再試'

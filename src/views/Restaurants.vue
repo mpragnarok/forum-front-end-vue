@@ -22,6 +22,7 @@
         :current-page="currentPage"
         :total-page="totalPage"
       />
+      <div v-if="restaurants.length <1">No data</div>
     </template>
   </div>
 </template>
